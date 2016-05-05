@@ -5,8 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RomSync"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="RomSync" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ToolBar Grid.Row="0">
+            <Button >Pick Database File...</Button>
+            <Button>Pick Input Path...</Button>
+            <Button>Pick Output Path...</Button>
+        </ToolBar>
+        <DataGrid Grid.Row="1">
+
+        </DataGrid>
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock Name="DatabaseFile">#Temp#</TextBlock>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Name="InputPath">#Input Path#</TextBlock>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Name="OutputPath">#Output Path#</TextBlock>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>
