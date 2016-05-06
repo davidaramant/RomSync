@@ -9,7 +9,7 @@
         Width="300"
         Title="ROM Sync"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
-    
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,8 +19,19 @@
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <TextBlock FontSize="36"
+        <ToolBar Grid.Row="0">
+            <Button>Stuff</Button>
+            <Button>Stuff2</Button>
+        </ToolBar>
+
+        <TextBlock Grid.Row="1"
+            FontSize="36"
                    FontWeight="Bold"
                    Foreground="Purple"
                    Text="{Binding WelcomeTitle}"
@@ -28,5 +39,10 @@
                    HorizontalAlignment="Center"
                    TextWrapping="Wrap" />
 
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock>Stuff</TextBlock>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>
