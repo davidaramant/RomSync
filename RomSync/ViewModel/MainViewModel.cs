@@ -13,11 +13,6 @@ namespace RomSync.ViewModel
     {
         private readonly IDataService _dataService;
 
-        /// <summary>
-        /// The <see cref="WelcomeTitle" /> property's name.
-        /// </summary>
-        public const string WelcomeTitlePropertyName = "WelcomeTitle";
-
         private string _welcomeTitle = string.Empty;
 
         /// <summary>
@@ -26,14 +21,8 @@ namespace RomSync.ViewModel
         /// </summary>
         public string WelcomeTitle
         {
-            get
-            {
-                return _welcomeTitle;
-            }
-            set
-            {
-                Set(ref _welcomeTitle, value);
-            }
+            get { return _welcomeTitle; }
+            set { Set(ref _welcomeTitle, value); }
         }
 
         /// <summary>
@@ -54,12 +43,5 @@ namespace RomSync.ViewModel
                     WelcomeTitle = item.Title;
                 });
         }
-
-        ////public override void Cleanup()
-        ////{
-        ////    // Clean up if needed
-
-        ////    base.Cleanup();
-        ////}
     }
 }
