@@ -30,15 +30,34 @@
             <Button>Stuff2</Button>
         </ToolBar>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding GameList}" AutoGenerateColumns="False">
+        <DataGrid 
+            Grid.Row="1" 
+            ItemsSource="{Binding GameList}" 
+            AutoGenerateColumns="False"
+            AlternatingRowBackground="AliceBlue">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Width="SizeToCells" IsReadOnly="True" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Manufacturer" Width="SizeToCells" IsReadOnly="True" Binding="{Binding Manufacturer}" />
-                <DataGridTextColumn Header="Year" Width="SizeToCells" IsReadOnly="True" Binding="{Binding Year}" />
-                <DataGridComboBoxColumn Header="State" Width="SizeToCells" SelectedItemBinding="{Binding State}" ItemsSource="{Binding Source={StaticResource StateEnum}}"/>
+                <DataGridTextColumn 
+                    Header="Name" 
+                    Width="SizeToCells" 
+                    IsReadOnly="True" 
+                    Binding="{Binding Name}" />
+                <DataGridTextColumn 
+                    Header="Manufacturer" 
+                    Width="SizeToCells" 
+                    IsReadOnly="True" 
+                    Binding="{Binding Manufacturer}" />
+                <DataGridTextColumn 
+                    Header="Year" 
+                    Width="SizeToCells" 
+                    IsReadOnly="True" 
+                    Binding="{Binding Year}" />
+                <DataGridComboBoxColumn 
+                    Header="State" 
+                    Width="SizeToCells" 
+                    SelectedItemBinding="{Binding State}" 
+                    ItemsSource="{Binding Source={StaticResource StateEnum}}"/>
             </DataGrid.Columns>
         </DataGrid>
-        
 
         <StatusBar Grid.Row="2">
             <StatusBarItem>

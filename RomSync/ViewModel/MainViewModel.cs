@@ -15,18 +15,6 @@ namespace RomSync.ViewModel
     {
         private readonly IDataService _dataService;
 
-        private string _welcomeTitle = string.Empty;
-
-        /// <summary>
-        /// Gets the WelcomeTitle property.
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// </summary>
-        public string WelcomeTitle
-        {
-            get { return _welcomeTitle; }
-            set { Set(ref _welcomeTitle, value); }
-        }
-
         public ObservableCollection<GameViewModel> GameList { get; } = new ObservableCollection<GameViewModel>();
 
         /// <summary>
