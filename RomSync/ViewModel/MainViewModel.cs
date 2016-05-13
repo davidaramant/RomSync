@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight;
 using RomSync.Model;
 
 namespace RomSync.ViewModel
@@ -25,6 +26,8 @@ namespace RomSync.ViewModel
             set { Set(ref _welcomeTitle, value); }
         }
 
+        public ObservableCollection<GameViewModel> GameList { get; }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -42,6 +45,10 @@ namespace RomSync.ViewModel
 
                     WelcomeTitle = item.Title;
                 });
+
+            GameList = new ObservableCollection<GameViewModel>(new[] {new GameViewModel(
+                new GameInfo("shortName","longName","Manufacturer",1981),
+                SyncState.Unsynced), });
         }
     }
 }

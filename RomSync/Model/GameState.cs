@@ -1,6 +1,6 @@
 ﻿namespace RomSync.Model
 {
-    sealed class GameState
+    public sealed class GameState
     {
         public GameInfo Info { get; }
         public SyncState CurrentState { get; set; }

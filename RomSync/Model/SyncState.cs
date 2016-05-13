@@ -1,6 +1,6 @@
 ﻿namespace RomSync.Model
 {
-    enum SyncState
+    public enum SyncState
     {
         Unsynced,
         NeoGeo,

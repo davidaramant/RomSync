@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RomSync.Model
 {
-    sealed class FileSyncer
+    public sealed class FileSyncer
     {
 
 

@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace RomSync.Model
 {
-    static class DatabaseParser
+    public static class DatabaseParser
     {
         public static IEnumerable<GameInfo> ParseFile(string filePath)
         {

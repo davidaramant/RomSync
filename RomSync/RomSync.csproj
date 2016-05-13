@@ -88,6 +88,8 @@
     <Compile Include="Model\GameState.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\SyncState.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModel\GameViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

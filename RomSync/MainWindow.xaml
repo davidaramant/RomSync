@@ -30,14 +30,15 @@
             <Button>Stuff2</Button>
         </ToolBar>
 
-        <TextBlock Grid.Row="1"
-            FontSize="36"
-                   FontWeight="Bold"
-                   Foreground="Purple"
-                   Text="{Binding WelcomeTitle}"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   TextWrapping="Wrap" />
+        <DataGrid Grid.Row="1" ItemsSource="{Binding GameList}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Width="SizeToCells" IsReadOnly="True" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Manufacturer" Width="SizeToCells" IsReadOnly="True" Binding="{Binding Manufacturer}" />
+                <DataGridTextColumn Header="Year" Width="SizeToCells" IsReadOnly="True" Binding="{Binding Year}" />
+                <DataGridComboBoxColumn Header="State" Width="SizeToCells" SelectedItemBinding="{Binding State}" ItemsSource="{Binding Source={StaticResource StateEnum}}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
 
         <StatusBar Grid.Row="2">
             <StatusBarItem>

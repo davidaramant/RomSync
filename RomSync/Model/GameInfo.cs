@@ -1,6 +1,6 @@
 ﻿namespace RomSync.Model
 {
-    sealed class GameInfo
+    public sealed class GameInfo
     {
         public string ShortName { get; }
         public string LongName { get; }
