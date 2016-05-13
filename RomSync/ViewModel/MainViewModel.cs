@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using RomSync.Model;
 
@@ -26,7 +27,7 @@ namespace RomSync.ViewModel
             set { Set(ref _welcomeTitle, value); }
         }
 
-        public ObservableCollection<GameViewModel> GameList { get; }
+        public ObservableCollection<GameViewModel> GameList { get; } = new ObservableCollection<GameViewModel>();
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -34,21 +35,20 @@ namespace RomSync.ViewModel
         public MainViewModel(IDataService dataService)
         {
             _dataService = dataService;
-            _dataService.GetData(
-                (item, error) =>
-                {
-                    if (error != null)
-                    {
-                        // Report error here
-                        return;
-                    }
 
-                    WelcomeTitle = item.Title;
-                });
+            LoadList();
+        }
 
-            GameList = new ObservableCollection<GameViewModel>(new[] {new GameViewModel(
-                new GameInfo("shortName","longName","Manufacturer",1981),
-                SyncState.Unsynced), });
+        private async Task LoadList()
+        {
+            var listTask = _dataService.GetGameListAsync();
+
+            await listTask;
+
+            foreach (var info in listTask.Result)
+            {
+                GameList.Add(new GameViewModel(info));
+            }
         }
     }
 }

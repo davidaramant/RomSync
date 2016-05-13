@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using RomSync.Annotations;
 using RomSync.Model;
 
@@ -17,7 +12,7 @@ namespace RomSync.ViewModel
 
         public string Name => _info.LongName;
         public string Manufacturer => _info.Manufacturer;
-        public int Year => _info.Year;
+        public string Year => _info.Year;
 
         public SyncState State
         {

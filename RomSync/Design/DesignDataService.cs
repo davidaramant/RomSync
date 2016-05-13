@@ -1,16 +1,19 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using RomSync.Model;
 
 namespace RomSync.Design
 {
     public class DesignDataService : IDataService
     {
-        public void GetData(Action<DataItem, Exception> callback)
+        public Task<IEnumerable<GameState>> GetGameListAsync()
         {
-            // Use this to create design time data
-
-            var item = new DataItem("Welcome to MVVM Light [design]");
-            callback(item, null);
+            return Task<IEnumerable<GameState>>.Factory.StartNew(() => new[]
+            {
+                new GameState(
+                    new GameInfo("shortName","longName","Manufacturer","1981"),
+                    SyncState.Unsynced),
+            });
         }
     }
 }

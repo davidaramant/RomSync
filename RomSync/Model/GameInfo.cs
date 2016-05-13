@@ -5,9 +5,9 @@
         public string ShortName { get; }
         public string LongName { get; }
         public string Manufacturer { get; }
-        public int Year { get; }
+        public string Year { get; }
 
-        public GameInfo(string shortName, string longName, string manufacturer, int year)
+        public GameInfo(string shortName, string longName, string manufacturer, string year)
         {
             ShortName = shortName;
             LongName = longName;

@@ -19,7 +19,7 @@ namespace RomSync.Model
                             shortName: game.Attribute("name").Value,
                             longName: game.Element("description").Value,
                             manufacturer: game.Element("manufacturer").Value,
-                            year: int.Parse(game.Element("year").Value)));
+                            year: game.Element("year").Value));
             }
         }
     }
