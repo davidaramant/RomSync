@@ -12,5 +12,10 @@ namespace RomSync.Extensions
                 collection.Add(item);
             }
         }
+
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> sequence)
+        {
+            return new HashSet<T>(sequence);
+        }
     }
 }
