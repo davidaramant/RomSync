@@ -26,12 +26,12 @@ namespace RomSync.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DatabasePath {
+        public string DatabaseFilePath {
             get {
-                return ((string)(this["DatabasePath"]));
+                return ((string)(this["DatabaseFilePath"]));
             }
             set {
-                this["DatabasePath"] = value;
+                this["DatabaseFilePath"] = value;
             }
         }
         

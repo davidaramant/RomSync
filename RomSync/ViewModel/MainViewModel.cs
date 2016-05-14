@@ -16,7 +16,7 @@ namespace RomSync.ViewModel
         private readonly IDataService _dataService;
 
         public ObservableCollection<GameViewModel> GameList { get; } = new ObservableCollection<GameViewModel>();
-
+        
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -24,7 +24,7 @@ namespace RomSync.ViewModel
         {
             _dataService = dataService;
 
-            LoadList();
+            //LoadList();
         }
 
         private async Task LoadList()

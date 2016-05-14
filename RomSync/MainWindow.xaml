@@ -59,9 +59,15 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StatusBar Grid.Row="2">
+        <StatusBar Grid.Row="2" DataContext="{Binding Settings, Source={StaticResource Locator}}">
             <StatusBarItem>
-                <TextBlock>Stuff</TextBlock>
+                <TextBlock Text="{Binding DatabaseFilePath}"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="{Binding InputPath}"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="{Binding OutputPath}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>

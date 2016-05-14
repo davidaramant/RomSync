@@ -39,6 +39,7 @@ namespace RomSync.ViewModel
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<SettingsViewModel>();
         }
 
         /// <summary>
@@ -48,6 +49,11 @@ namespace RomSync.ViewModel
             "CA1822:MarkMembersAsStatic",
             Justification = "This non-static member is needed for data binding purposes.")]
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
 
         /// <summary>
         /// Cleans up all the resources.
