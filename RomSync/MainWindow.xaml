@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         mc:Ignorable="d ignore"
-        Height="300"
-        Width="300"
+        Height="500"
+        Width="500"
         Title="ROM Sync"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
 
@@ -25,9 +25,10 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ToolBar Grid.Row="0">
-            <Button>Stuff</Button>
-            <Button>Stuff2</Button>
+        <ToolBar Grid.Row="0" DataContext="{Binding Settings, Source={StaticResource Locator}}">
+            <Button Command="{Binding PickDatabaseFileCommand}">Pick database file...</Button>
+            <Button Command="{Binding PickInputPathCommand}">Pick input path...</Button>
+            <Button Command="{Binding PickOutputPathCommand}">Pick output path...</Button>
         </ToolBar>
 
         <DataGrid 
