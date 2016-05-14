@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RomSync.Properties;
 
 namespace RomSync.Model
 {
@@ -8,10 +9,9 @@ namespace RomSync.Model
     {
         public Task<IEnumerable<GameState>> GetGameListAsync()
         {
-            // TODO: Inject real path here
             // TODO: Combine with file scanner to determine state
             return Task<IEnumerable<GameState>>.Factory.StartNew(() =>
-                DatabaseParser.ParseFile(@"C:\git\personal\FB Alpha v0.2.97.38 (ClrMame Pro XML).dat").
+                DatabaseParser.ParseFile(Settings.Default.DatabaseFilePath).
                 Select(_ => new GameState(_, currentState: SyncState.Unsynced)));
         }
     }

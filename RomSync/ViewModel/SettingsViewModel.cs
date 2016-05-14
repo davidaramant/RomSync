@@ -66,15 +66,15 @@ namespace RomSync.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ICommand PickDatabaseFileCommand { get; private set; }
-        public ICommand PickInputPathCommand { get; private set; }
-        public ICommand PickOutputPathCommand { get; private set; }
+        public ICommand PickDatabaseFileCommand { get; }
+        public ICommand PickInputPathCommand { get; }
+        public ICommand PickOutputPathCommand { get; }
 
         public SettingsViewModel()
         {
             PickDatabaseFileCommand = new RelayCommand(() => PickFilePath().Into(path => { DatabaseFilePath = path; }));
             PickInputPathCommand = new RelayCommand(() => PickFolderPath().Into(path => { InputPath = path; }));
-            PickOutputPathCommand = new RelayCommand(() => PickFolderPath(allowNetworkPaths:true).Into(path => { OutputPath = path; }));
+            PickOutputPathCommand = new RelayCommand(() => PickFolderPath().Into(path => { OutputPath = path; }));
         }
 
         public IOption<string> PickFilePath()
@@ -89,14 +89,10 @@ namespace RomSync.ViewModel
             }
         }
 
-        public IOption<string> PickFolderPath(bool allowNetworkPaths = false)
+        public IOption<string> PickFolderPath()
         {
-            using (var folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog() )
+            using (var folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog())
             {
-                if (allowNetworkPaths)
-                {
-                    folderBrowserDialog.RootFolder = Environment.SpecialFolder.Desktop;
-                }
                 if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     return Option.SomeOrNone(folderBrowserDialog.SelectedPath);

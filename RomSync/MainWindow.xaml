@@ -21,6 +21,7 @@
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -30,9 +31,13 @@
             <Button Command="{Binding PickInputPathCommand}">Pick input path...</Button>
             <Button Command="{Binding PickOutputPathCommand}">Pick output path...</Button>
         </ToolBar>
+        
+        <WrapPanel Grid.Row="1">
+            <Button Command="{Binding LoadStateCommand}">Load Current state</Button>
+        </WrapPanel>
 
         <DataGrid 
-            Grid.Row="1" 
+            Grid.Row="2" 
             ItemsSource="{Binding GameList}" 
             AutoGenerateColumns="False"
             AlternatingRowBackground="AliceBlue">
@@ -60,7 +65,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StatusBar Grid.Row="2" DataContext="{Binding Settings, Source={StaticResource Locator}}">
+        <StatusBar Grid.Row="3" DataContext="{Binding Settings, Source={StaticResource Locator}}">
             <StatusBarItem>
                 <TextBlock Text="{Binding DatabaseFilePath}"/>
             </StatusBarItem>
