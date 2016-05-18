@@ -68,7 +68,7 @@ namespace RomSync.ViewModel.Utilities
 
         protected CancellationToken CancellationToken => _cancelCommand.Token;
 
-        protected sealed class CancelAsyncCommand : ICommand, IDisposable
+        private sealed class CancelAsyncCommand : ICommand, IDisposable
         {
             private CancellationTokenSource _cts = new CancellationTokenSource();
             private bool _commandExecuting;

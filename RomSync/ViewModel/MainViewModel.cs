@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,6 +29,7 @@ namespace RomSync.ViewModel
         {
             _dataService = dataService;
 
+            // TODO: This thing is messed up.  By default the Execution is null, which causes a bunch of bindings to screw up
             LoadStateCommand = AsyncCommand.Create(GetGames);
         }
 
