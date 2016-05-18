@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
 using RomSync.Extensions;
 using RomSync.Model;
+using RomSync.ViewModel.Utilities;
 
 namespace RomSync.ViewModel
 {
@@ -20,7 +21,7 @@ namespace RomSync.ViewModel
         private readonly IDataService _dataService;
 
         public ObservableCollection<GameViewModel> GameList { get; } = new ObservableCollection<GameViewModel>();
-        public ICommand LoadStateCommand { get; }
+        public IAsyncCommand<IEnumerable<GameViewModel>> LoadStateCommand { get; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -29,16 +30,23 @@ namespace RomSync.ViewModel
         {
             _dataService = dataService;
 
-            LoadStateCommand = new RelayCommand(() => LoadList());
+            LoadStateCommand = AsyncCommand.Create(GetGames);
         }
 
-        private async Task LoadList()
+        private async Task<IEnumerable<GameViewModel>> GetGames(CancellationToken cts)
         {
             var listTask = _dataService.GetGameListAsync();
 
             await listTask;
 
-            GameList.AddRange(listTask.Result.OrderBy(game => game.Info.LongName).Select(_ => new GameViewModel(_)));
+            var viewModels = listTask.Result.OrderBy(game => game.Info.LongName).Select(_ => new GameViewModel(_));
+
+            GameList.Clear();
+            GameList.AddRange(viewModels);
+
+            // TODO: This is stupid...
+            // TODO: Looks like it needs an untyped NotifyTaskCompletion and AsyncCommand for this to work the way it's supposed to.
+            return viewModels;
         }
     }
 }

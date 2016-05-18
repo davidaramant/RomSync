@@ -65,15 +65,12 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StatusBar Grid.Row="3" DataContext="{Binding Settings, Source={StaticResource Locator}}">
-            <StatusBarItem>
-                <TextBlock Text="{Binding DatabaseFilePath}"/>
+        <StatusBar Grid.Row="3">
+            <StatusBarItem Visibility="{Binding LoadStateCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="Loading..."/>
             </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock Text="{Binding InputPath}"/>
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock Text="{Binding OutputPath}"/>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock Text="{Binding Path=GameList.Count, StringFormat=Games found: {0}}" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

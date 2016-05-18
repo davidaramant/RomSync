@@ -98,6 +98,11 @@
     <Compile Include="ViewModel\GameViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\Utilities\AsyncBaseCommand.cs" />
+    <Compile Include="ViewModel\Utilities\AsyncCommand.cs" />
+    <Compile Include="ViewModel\Utilities\IAsyncCommand.cs" />
+    <Compile Include="ViewModel\Utilities\IAsyncCommandT.cs" />
+    <Compile Include="ViewModel\Utilities\NotifyTaskCompletion.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -7,4 +7,5 @@
             <x:Type Type="model:SyncState"/>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 </ResourceDictionary>
