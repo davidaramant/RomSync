@@ -100,9 +100,11 @@
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\Utilities\AsyncBaseCommand.cs" />
     <Compile Include="ViewModel\Utilities\AsyncCommand.cs" />
+    <Compile Include="ViewModel\Utilities\AsyncCommandT.cs" />
+    <Compile Include="ViewModel\Utilities\BaseNotifyTaskCompletion.cs" />
     <Compile Include="ViewModel\Utilities\IAsyncCommand.cs" />
-    <Compile Include="ViewModel\Utilities\IAsyncCommandT.cs" />
     <Compile Include="ViewModel\Utilities\NotifyTaskCompletion.cs" />
+    <Compile Include="ViewModel\Utilities\NotifyTaskCompletionT.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

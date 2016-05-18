@@ -1,33 +1,29 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using RomSync.Annotations;
 
 namespace RomSync.ViewModel.Utilities
 {
-    public static class AsyncCommand
+    public sealed class AsyncCommand : AsyncCommandBase, IAsyncCommand
     {
+        #region Builders
+
         public static AsyncCommand<TResult> Create<TResult>(Func<CancellationToken, Task<TResult>> command)
         {
             return new AsyncCommand<TResult>(command);
         }
-    }
 
-    public sealed class AsyncCommand<TResult> : AsyncCommandBase, INotifyPropertyChanged, IAsyncCommand<TResult>, IDisposable
-    {
-        private readonly Func<CancellationToken, Task<TResult>> _command;
-        private readonly CancelAsyncCommand _cancelCommand;
-        private NotifyTaskCompletion<TResult> _execution;
-
-        public override bool CanExecute(object parameter)
+        public static AsyncCommand Create(Func<CancellationToken, Task>  command)
         {
-            return true;
+            return new AsyncCommand(command);
         }
 
-        public NotifyTaskCompletion<TResult> Execution
+        #endregion
+
+        private readonly Func<CancellationToken, Task> _command;
+        private NotifyTaskCompletion _execution;
+
+        public NotifyTaskCompletion Execution
 
         {
             get { return _execution; }
@@ -39,75 +35,19 @@ namespace RomSync.ViewModel.Utilities
             }
         }
 
-        public AsyncCommand(Func<CancellationToken, Task<TResult>> command)
+        public AsyncCommand(Func<CancellationToken, Task> command)
         {
             _command = command;
-            _cancelCommand = new CancelAsyncCommand();
         }
+
         public override async Task ExecuteAsync(object parameter)
         {
-            _cancelCommand.NotifyCommandStarting();
-            Execution = new NotifyTaskCompletion<TResult>(_command(_cancelCommand.Token));
+            NotifyCancelCommandThatCommandIsStarting();
+            Execution = new NotifyTaskCompletion(_command(CancellationToken));
             RaiseCanExecuteChanged();
             await Execution.TaskCompletion;
-            _cancelCommand.NotifyCommandFinished();
+            NotifyCancelCommandThatCommandIsFinished();
             RaiseCanExecuteChanged();
-        }
-        public ICommand CancelCommand => _cancelCommand;
-
-        public void Dispose()
-        {
-            _cancelCommand.Dispose();
-        }
-
-        private sealed class CancelAsyncCommand : ICommand, IDisposable
-        {
-            private CancellationTokenSource _cts = new CancellationTokenSource();
-            private bool _commandExecuting;
-            public CancellationToken Token => _cts.Token;
-
-            public void NotifyCommandStarting()
-            {
-                _commandExecuting = true;
-                if (!_cts.IsCancellationRequested)
-                    return;
-                _cts.Dispose();
-                _cts = new CancellationTokenSource();
-                RaiseCanExecuteChanged();
-            }
-            public void NotifyCommandFinished()
-            {
-                _commandExecuting = false;
-                RaiseCanExecuteChanged();
-            }
-            bool ICommand.CanExecute(object parameter)
-            {
-                return _commandExecuting && !_cts.IsCancellationRequested;
-            }
-            void ICommand.Execute(object parameter)
-            {
-                _cts.Cancel();
-                RaiseCanExecuteChanged();
-            }
-
-            private void RaiseCanExecuteChanged()
-            {
-                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-            }
-
-            public event EventHandler CanExecuteChanged;
-            public void Dispose()
-            {
-                _cts.Dispose();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

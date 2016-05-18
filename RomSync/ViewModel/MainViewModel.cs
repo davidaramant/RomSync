@@ -21,7 +21,7 @@ namespace RomSync.ViewModel
         private readonly IDataService _dataService;
 
         public ObservableCollection<GameViewModel> GameList { get; } = new ObservableCollection<GameViewModel>();
-        public IAsyncCommand<IEnumerable<GameViewModel>> LoadStateCommand { get; }
+        public IAsyncCommand LoadStateCommand { get; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -33,7 +33,7 @@ namespace RomSync.ViewModel
             LoadStateCommand = AsyncCommand.Create(GetGames);
         }
 
-        private async Task<IEnumerable<GameViewModel>> GetGames(CancellationToken cts)
+        private async Task GetGames(CancellationToken cts)
         {
             var listTask = _dataService.GetGameListAsync();
 
@@ -43,10 +43,6 @@ namespace RomSync.ViewModel
 
             GameList.Clear();
             GameList.AddRange(viewModels);
-
-            // TODO: This is stupid...
-            // TODO: Looks like it needs an untyped NotifyTaskCompletion and AsyncCommand for this to work the way it's supposed to.
-            return viewModels;
         }
     }
 }
