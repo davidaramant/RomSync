@@ -34,11 +34,13 @@
         
         <WrapPanel Grid.Row="1">
             <Button Command="{Binding LoadStateCommand}">Load Current state</Button>
+            <TextBox Text="{Binding Filter}" Width="200"></TextBox>
+            <Button Command="{Binding UpdateGameFilter}">Go!</Button>
         </WrapPanel>
 
         <DataGrid 
             Grid.Row="2" 
-            ItemsSource="{Binding GameList}" 
+            ItemsSource="{Binding GameListView}" 
             AutoGenerateColumns="False"
             AlternatingRowBackground="AliceBlue">
             <DataGrid.Columns>
@@ -70,7 +72,7 @@
                 <TextBlock Text="Loading..."/>
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock Text="{Binding Path=GameList.Count, StringFormat=Games found: {0}}" />
+                <TextBlock Text="{Binding Path=_gameList.Count, StringFormat=Games found: {0}}" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

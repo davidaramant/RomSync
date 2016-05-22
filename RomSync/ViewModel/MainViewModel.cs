@@ -1,8 +1,12 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Data;
+using System.Windows.Input;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using RomSync.Extensions;
 using RomSync.Model;
 using RomSync.ViewModel.Utilities;
@@ -19,8 +23,17 @@ namespace RomSync.ViewModel
     {
         private readonly IDataService _dataService;
 
-        public ObservableCollection<GameViewModel> GameList { get; } = new ObservableCollection<GameViewModel>();
+        private readonly ObservableCollection<GameViewModel> _gameList = new ObservableCollection<GameViewModel>();
+        private string _filter;
+        public ICollectionView GameListView { get; }
         public IAsyncCommand LoadStateCommand { get; }
+        public ICommand UpdateGameFilter { get; }
+
+        public string Filter
+        {
+            get { return _filter; }
+            set { Set(ref _filter, value); }
+        }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -29,8 +42,13 @@ namespace RomSync.ViewModel
         {
             _dataService = dataService;
 
+            GameListView = CollectionViewSource.GetDefaultView(_gameList);
+            GameListView.Filter = FilterGames;
+
             // TODO: This thing is messed up.  By default the Execution is null, which causes a bunch of bindings to screw up
             LoadStateCommand = AsyncCommand.Create(GetGames);
+
+            UpdateGameFilter = new RelayCommand(UpdateFilter);
         }
 
         private async Task GetGames(CancellationToken cts)
@@ -41,8 +59,25 @@ namespace RomSync.ViewModel
 
             var viewModels = listTask.Result.OrderBy(game => game.Info.LongName).Select(_ => new GameViewModel(_));
 
-            GameList.Clear();
-            GameList.AddRange(viewModels);
+            _gameList.Clear();
+            _gameList.AddRange(viewModels);
+        }
+
+        private bool FilterGames(object item)
+        {
+            var gameVm = item as GameViewModel;
+
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                return gameVm.Name.ToLowerInvariant().Contains(Filter.ToLowerInvariant());
+            }
+
+            return true;
+        }
+
+        public void UpdateFilter()
+        {
+            GameListView.Refresh();
         }
     }
 }
