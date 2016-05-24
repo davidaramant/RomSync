@@ -14,17 +14,40 @@ namespace Tests
         [Test]
         public void ShouldLowerCaseInput()
         {
-            var output = FilterParser.Parse("SomeTHING");
-
-            Assert.That(output.ToArray(), Is.EqualTo(new[] { "something"}));
+            TestParsing(
+                "SomeThing", 
+                "something");
         }
 
         [Test]
         public void ShouldSplitOnWhitespace()
         {
-            var output = FilterParser.Parse("  Here Is Some Stuff");
+            TestParsing(
+                "  Here Is Some Stuff",
+                "here","is","some","stuff");
+        }
 
-            Assert.That(output.ToArray(), Is.EqualTo(new[] {"here","is","some","stuff"}));
+        [Test]
+        public void ShouldParseQuotedStringIntoSingleToken()
+        {
+            TestParsing(
+                "\"some string\" and more ",
+                "some string", "and", "more");
+        }
+
+        [Test]
+        public void ShouldParseQuotedStringAtEndOfInput()
+        {
+            TestParsing(
+                "at the \"end instead\"",
+                "at", "the", "end instead");
+        }
+
+        private static void TestParsing(string input, params string[] tokens)
+        {
+            var output = FilterParser.Parse(input);
+
+            Assert.That(output.ToArray(), Is.EqualTo(tokens));
         }
     }
 }

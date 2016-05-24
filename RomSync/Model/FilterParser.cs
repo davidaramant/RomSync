@@ -10,7 +10,41 @@ namespace RomSync.Model
     {
         public static IEnumerable<string> Parse(string input)
         {
-            return input.ToLowerInvariant().Split(new [] {' '},StringSplitOptions.RemoveEmptyEntries);
+            var buffer = new StringBuilder();
+
+            bool insideQuotedString = false;
+
+            foreach (var c in input.ToLowerInvariant())
+            {
+                switch (c)
+                {
+                    case '"':
+                        insideQuotedString = !insideQuotedString;
+                        break;
+                    case ' ':
+                        if (insideQuotedString)
+                        {
+                            buffer.Append(c);
+                        }
+                        else
+                        {
+                            if (buffer.Length > 0)
+                            {
+                                yield return buffer.ToString();
+                                buffer.Clear();
+                            }
+                        }
+                        break;
+                    default:
+                        buffer.Append(c);
+                        break;
+                }
+            }
+
+            if (buffer.Length > 0)
+            {
+                yield return buffer.ToString();
+            }
         }
     }
 }
