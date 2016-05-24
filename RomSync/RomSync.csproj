@@ -89,6 +89,7 @@
     <Compile Include="Model\DatabaseParser.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\FileSyncer.cs" />
+    <Compile Include="Model\FilterParser.cs" />
     <Compile Include="Model\GameInfo.cs" />
     <Compile Include="Model\GameState.cs" />
     <Compile Include="Model\IDataService.cs" />
