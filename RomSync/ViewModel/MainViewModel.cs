@@ -24,15 +24,14 @@ namespace RomSync.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private readonly IDataService _dataService;
-
         private readonly ObservableCollection<GameViewModel> _gameList = new ObservableCollection<GameViewModel>();
-        private string _filterInput;
+        private IFilter _filter = Filter.Empty;
+
         public ICollectionView GameListView { get; }
         public IAsyncCommand LoadStateCommand { get; }
         public ICommand ClearGameFilter { get; }
 
-        private IFilter _filter = Filter.Empty;
-
+        private string _filterInput = String.Empty;
         public string FilterInput
         {
             get { return _filterInput; }

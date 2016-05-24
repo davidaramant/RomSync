@@ -12,7 +12,12 @@ namespace RomSync.Model
     {
         public static IFilter Parse(string input)
         {
-            return new Contains(input.Trim().ToLowerInvariant());
+            var cleanedInput = input.Trim().ToLowerInvariant();
+
+            if( cleanedInput == String.Empty)
+                return Empty;
+
+            return new Contains(cleanedInput);
         }
 
         public static readonly IFilter Empty = new EmptyFilter();
