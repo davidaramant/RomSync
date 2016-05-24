@@ -26,21 +26,21 @@ namespace RomSync.ViewModel
         private readonly IDataService _dataService;
 
         private readonly ObservableCollection<GameViewModel> _gameList = new ObservableCollection<GameViewModel>();
-        private string _filter;
+        private string _filterInput;
         public ICollectionView GameListView { get; }
         public IAsyncCommand LoadStateCommand { get; }
         public ICommand ClearGameFilter { get; }
 
-        private readonly List<string> _filterParts = new List<string>();
+        private IFilter _filter = Filter.Empty;
 
-        public string Filter
+        public string FilterInput
         {
-            get { return _filter; }
+            get { return _filterInput; }
             set
             {
-                if (value != _filter)
+                if (value != _filterInput)
                 {
-                    Set(ref _filter, value);
+                    Set(ref _filterInput, value);
                     UpdateFilter(value);
                 }
             }
@@ -59,7 +59,7 @@ namespace RomSync.ViewModel
             // TODO: This thing is messed up.  By default the Execution is null, which causes a bunch of bindings to screw up
             LoadStateCommand = AsyncCommand.Create(GetGames);
 
-            ClearGameFilter = new RelayCommand(() => Filter = String.Empty);
+            ClearGameFilter = new RelayCommand(() => FilterInput = String.Empty);
         }
 
         private async Task GetGames(CancellationToken cts)
@@ -78,13 +78,12 @@ namespace RomSync.ViewModel
         {
             var gameVm = item as GameViewModel;
 
-            return !_filterParts.Any() || _filterParts.Any(part => gameVm.SearchString.Contains(part));
+            return gameVm == null || _filter.Matches(gameVm.SearchString);
         }
 
-        public void UpdateFilter(string filter)
+        public void UpdateFilter(string filterInput)
         {
-            _filterParts.Clear();
-            _filterParts.AddRange(FilterParser.Parse(filter));
+            _filter = Filter.Parse(filterInput);
             GameListView.Refresh();
         }
     }
