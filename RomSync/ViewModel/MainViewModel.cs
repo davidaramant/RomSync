@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
@@ -27,12 +29,21 @@ namespace RomSync.ViewModel
         private string _filter;
         public ICollectionView GameListView { get; }
         public IAsyncCommand LoadStateCommand { get; }
-        public ICommand UpdateGameFilter { get; }
+        public ICommand ClearGameFilter { get; }
+
+        private readonly List<string> _filterParts = new List<string>();
 
         public string Filter
         {
             get { return _filter; }
-            set { Set(ref _filter, value); }
+            set
+            {
+                if (value != _filter)
+                {
+                    Set(ref _filter, value);
+                    UpdateFilter(value);
+                }
+            }
         }
 
         /// <summary>
@@ -48,7 +59,7 @@ namespace RomSync.ViewModel
             // TODO: This thing is messed up.  By default the Execution is null, which causes a bunch of bindings to screw up
             LoadStateCommand = AsyncCommand.Create(GetGames);
 
-            UpdateGameFilter = new RelayCommand(UpdateFilter);
+            ClearGameFilter = new RelayCommand(() => Filter = String.Empty);
         }
 
         private async Task GetGames(CancellationToken cts)
@@ -67,16 +78,13 @@ namespace RomSync.ViewModel
         {
             var gameVm = item as GameViewModel;
 
-            if (!string.IsNullOrEmpty(Filter))
-            {
-                return gameVm.Name.ToLowerInvariant().Contains(Filter.ToLowerInvariant());
-            }
-
-            return true;
+            return !_filterParts.Any() || _filterParts.Any(part => gameVm.SearchString.Contains(part));
         }
 
-        public void UpdateFilter()
+        public void UpdateFilter(string filter)
         {
+            _filterParts.Clear();
+            _filterParts.AddRange(FilterParser.Parse(filter));
             GameListView.Refresh();
         }
     }

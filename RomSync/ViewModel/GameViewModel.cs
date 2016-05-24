@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using RomSync.Annotations;
 using RomSync.Model;
@@ -13,6 +14,7 @@ namespace RomSync.ViewModel
         public string Name => _info.LongName;
         public string Manufacturer => _info.Manufacturer;
         public string Year => _info.Year;
+        public string SearchString { get; }
 
         public SyncState State
         {
@@ -29,12 +31,11 @@ namespace RomSync.ViewModel
         {
             State = state;
             _info = info;
+            SearchString = (Name + " " + Manufacturer + " " + Year).ToLowerInvariant();
         }
 
-        public GameViewModel(GameState gameState)
+        public GameViewModel(GameState gameState) : this(gameState.Info, gameState.CurrentState)
         {
-            State = gameState.CurrentState;
-            _info = gameState.Info;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

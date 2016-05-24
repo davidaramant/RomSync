@@ -34,8 +34,8 @@
         
         <WrapPanel Grid.Row="1">
             <Button Command="{Binding LoadStateCommand}">Load Current state</Button>
-            <TextBox Text="{Binding Filter}" Width="200"></TextBox>
-            <Button Command="{Binding UpdateGameFilter}">Go!</Button>
+            <TextBox Name="FilterBox" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+            <Button Command="{Binding ClearGameFilter}">Clear</Button>
         </WrapPanel>
 
         <DataGrid 
