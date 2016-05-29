@@ -9,9 +9,9 @@
             _term = term;
         }
 
-        public bool Matches(string gameSearchString)
+        public bool Matches(string gameMetadata)
         {
-            return gameSearchString.Contains(_term);
+            return gameMetadata.Contains(_term);
         }
     }
 }

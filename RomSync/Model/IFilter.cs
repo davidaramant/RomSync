@@ -2,6 +2,6 @@
 {
     public interface IFilter
     {
-        bool Matches(string gameSearchString);
+        bool Matches(string gameMetadata);
     }
 }

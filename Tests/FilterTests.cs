@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using RomSync.Model;
 
 namespace Tests
@@ -14,10 +9,29 @@ namespace Tests
         [TestCase("something", "something", true)]
         [TestCase("   something   ", "something", true)]
         [TestCase("SOMETHING", "something", true)]
-        [TestCase("some thing", "something", false)]
-        public void ShouldMatchSingleTerm(string filterString, string data, bool shouldMatch)
+        [TestCase("some thing", "something", true)]
+        [TestCase("something", "some thing", false)]
+        public void ShouldMatchSingleTerm(string filterString, string metadata, bool shouldMatch)
         {
-            Assert.That(Filter.Parse(filterString).Matches(data), Is.EqualTo(shouldMatch));
+            Assert.That(Filter.Parse(filterString).Matches(metadata), Is.EqualTo(shouldMatch));
+        }
+
+        [TestCase("\"red car\"", "red car", true)]
+        [TestCase("\"red car\"", "red cars", true)]
+        [TestCase("\"red car\"", "red ca rs", false)]
+        [TestCase("\"red car\"", "redcarrs", false)]
+        public void ShouldQuotedTerm(string filterString, string metadata, bool shouldMatch)
+        {
+            Assert.That(Filter.Parse(filterString).Matches(metadata), Is.EqualTo(shouldMatch));        }
+
+
+        [TestCase("red car", "red car", true)]
+        [TestCase("red car", "red", false)]
+        [TestCase("red car", "car", false)]
+        [TestCase("red car", "big red car", true)]
+        public void ShouldMatchMultipleTerms(string filterString, string metadata, bool shouldMatch)
+        {
+            Assert.That(Filter.Parse(filterString).Matches(metadata), Is.EqualTo(shouldMatch));
         }
     }
 }

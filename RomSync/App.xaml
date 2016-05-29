@@ -11,11 +11,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <!--Global View Model Locator-->
-            <vm:ViewModelLocator x:Key="Locator"
-                             d:IsDataSource="True" />
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/PresentationFramework.AeroLite;component/themes/AeroLite.NormalColor.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
+            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
         </ResourceDictionary>
     </Application.Resources>
     

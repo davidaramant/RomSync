@@ -56,9 +56,6 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="presentationframework.aerolite">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -93,6 +90,7 @@
     <Compile Include="Model\DatabaseParser.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\FileSyncer.cs" />
+    <Compile Include="Model\Filtering\And.cs" />
     <Compile Include="Model\Filtering\Contains.cs" />
     <Compile Include="Model\Filter.cs" />
     <Compile Include="Model\IFilter.cs" />
