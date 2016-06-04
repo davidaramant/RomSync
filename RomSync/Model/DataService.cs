@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,8 +41,43 @@ namespace RomSync.Model
                         neoGeoGames: syncedNeoGeoGamesTask.Result)));
         }
 
-        private static SyncState DetermineSyncState(GameInfo info, HashSet<string> arcadeGames,
-            HashSet<string> neoGeoGames)
+        public Task UpdateGameList(IEnumerable<Tuple<GameState, SyncState>> requestedChanges)
+        {
+            return Task.WhenAll(requestedChanges.Select(rc => UpdateGame(rc.Item1, rc.Item2)));
+        }
+
+        private Task UpdateGame(GameState current, SyncState newState)
+        {
+            var settings = Settings.Default;
+
+            switch (newState)
+            {
+                case SyncState.Unsynced:
+                    Debug.Assert(current.CurrentPath != current.Info.FilePath, "Attempting to delete source file");
+                    return Task.Run(() => File.Delete(current.CurrentPath));
+
+                case SyncState.NeoGeo:
+                case SyncState.Arcade:
+                    var copyTask = Task.Run(() =>
+                                File.Copy(
+                                    current.Info.FilePath,
+                                    Path.Combine(settings.GetPath(newState), current.Info.FileName)));
+
+                    if (current.CurrentState != SyncState.Unsynced)
+                    {
+                        return Task.WhenAll(copyTask, Task.Run(() => File.Delete(current.CurrentPath)));
+                    }
+                    else
+                    {
+                        return copyTask;
+                    }
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+            }
+        }
+
+        private static SyncState DetermineSyncState(GameInfo info, HashSet<string> arcadeGames, HashSet<string> neoGeoGames)
         {
             if (arcadeGames.Contains(info.ShortName))
                 return SyncState.Arcade;
