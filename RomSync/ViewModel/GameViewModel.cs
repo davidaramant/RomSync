@@ -8,14 +8,14 @@ namespace RomSync.ViewModel
 {
     public sealed class GameViewModel : INotifyPropertyChanged
     {
-        private readonly GameInfo _info;
+        public readonly GameInfo Info;
         private SyncState _actualState;
         private SyncState _requestedState;
         private bool _pendingChange;
 
-        public string Name => _info.LongName;
-        public string Manufacturer => _info.Manufacturer;
-        public string Year => _info.Year;
+        public string Name => Info.LongName;
+        public string Manufacturer => Info.Manufacturer;
+        public string Year => Info.Year;
         public string Metadata { get; }
 
         public SyncState RequestedState
@@ -53,10 +53,15 @@ namespace RomSync.ViewModel
             }
         }
 
+        public void ChangeApplied()
+        {
+            ActualState = RequestedState;
+        }
+
         public GameViewModel(GameState gameState)
         {
             ActualState = gameState.CurrentState;
-            _info = gameState.Info;
+            Info = gameState.Info;
             Metadata = (Name + " " + Manufacturer + " " + Year).ToLowerInvariant();
         }
 

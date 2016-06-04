@@ -30,6 +30,7 @@ namespace RomSync.ViewModel
         public ICollectionView GameListView { get; }
         public IAsyncCommand LoadStateCommand { get; }
         public ICommand ClearGameFilter { get; }
+        public IAsyncCommand SyncCommand { get; }
 
         private string _filterInput = String.Empty;
         public string FilterInput
@@ -59,6 +60,8 @@ namespace RomSync.ViewModel
             LoadStateCommand = AsyncCommand.Create(GetGames);
 
             ClearGameFilter = new RelayCommand(() => FilterInput = String.Empty);
+
+            SyncCommand = AsyncCommand.Create(SyncGames);
         }
 
         private async Task GetGames(CancellationToken cts)
@@ -71,6 +74,21 @@ namespace RomSync.ViewModel
 
             GameList.Clear();
             GameList.AddRange(viewModels);
+        }
+
+        private async Task SyncGames(CancellationToken cts)
+        {
+            var pending = GameList.Where(g => g.PendingChange);
+
+            var gamesToSync =
+                pending.Select(g => Tuple.Create(new GameState(g.Info,g.ActualState), g.RequestedState));
+
+            await _dataService.UpdateGameList(gamesToSync);
+
+            foreach (var p in pending)
+            {
+                p.ChangeApplied();
+            }
         }
 
         private bool FilterGames(object item)
