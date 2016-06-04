@@ -24,9 +24,9 @@ namespace RomSync.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private readonly IDataService _dataService;
-        private readonly ObservableCollection<GameViewModel> _gameList = new ObservableCollection<GameViewModel>();
         private IFilter _filter = Filter.Empty;
 
+        public ObservableCollection<GameViewModel> GameList { get; } = new ObservableCollection<GameViewModel>();
         public ICollectionView GameListView { get; }
         public IAsyncCommand LoadStateCommand { get; }
         public ICommand ClearGameFilter { get; }
@@ -52,7 +52,7 @@ namespace RomSync.ViewModel
         {
             _dataService = dataService;
 
-            GameListView = CollectionViewSource.GetDefaultView(_gameList);
+            GameListView = CollectionViewSource.GetDefaultView(GameList);
             GameListView.Filter = FilterGames;
 
             // TODO: This thing is messed up.  By default the Execution is null, which causes a bunch of bindings to screw up
@@ -69,8 +69,8 @@ namespace RomSync.ViewModel
 
             var viewModels = listTask.Result.OrderBy(game => game.Info.LongName).Select(_ => new GameViewModel(_));
 
-            _gameList.Clear();
-            _gameList.AddRange(viewModels);
+            GameList.Clear();
+            GameList.AddRange(viewModels);
         }
 
         private bool FilterGames(object item)
