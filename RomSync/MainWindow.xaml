@@ -98,6 +98,9 @@
             <StatusBarItem Visibility="{Binding LoadStateCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <TextBlock Text="Loading..."/>
             </StatusBarItem>
+            <StatusBarItem Visibility="{Binding SyncCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="Syncing..."/>
+            </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
                 <TextBlock Text="{Binding Path=GameList.Count, StringFormat=Games found: {0}}" />
             </StatusBarItem>

@@ -39,6 +39,7 @@ namespace RomSync.ViewModel
                 _actualState = value;
                 OnPropertyChanged();
                 RequestedState = value;
+                PendingChange = value != ActualState;
             }
         }
 

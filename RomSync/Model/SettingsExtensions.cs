@@ -13,7 +13,7 @@ namespace RomSync.Model
 
         public static string ArcadePath(this Settings settings)
         {
-            return Path.Combine(settings.OutputPath, "arcade");
+            return Path.Combine(settings.OutputPath, "fba");
         }
 
         public static string GetPath(this Settings settings, SyncState state)
