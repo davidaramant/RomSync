@@ -9,33 +9,55 @@ namespace RomSync.ViewModel
     public sealed class GameViewModel : INotifyPropertyChanged
     {
         private readonly GameInfo _info;
-        private SyncState _state;
+        private SyncState _actualState;
+        private SyncState _requestedState;
+        private bool _pendingChange;
 
         public string Name => _info.LongName;
         public string Manufacturer => _info.Manufacturer;
         public string Year => _info.Year;
-        public string SearchString { get; }
+        public string Metadata { get; }
 
-        public SyncState State
+        public SyncState RequestedState
         {
-            get { return _state; }
+            get { return _requestedState; }
             set
             {
-                if (value == _state) return;
-                _state = value;
+                if (value == _requestedState) return;
+                _requestedState = value;
+                OnPropertyChanged();
+                PendingChange = value != ActualState;
+            }
+        }
+
+        public SyncState ActualState
+        {
+            get { return _actualState; }
+            private set
+            {
+                if (value == _actualState) return;
+                _actualState = value;
+                OnPropertyChanged();
+                RequestedState = value;
+            }
+        }
+
+        public bool PendingChange
+        {
+            get{return _pendingChange;}
+            private set
+            {
+                if (value == _pendingChange) return;
+                _pendingChange = value;
                 OnPropertyChanged();
             }
         }
 
-        public GameViewModel(GameInfo info, SyncState state)
+        public GameViewModel(GameState gameState)
         {
-            State = state;
-            _info = info;
-            SearchString = (Name + " " + Manufacturer + " " + Year).ToLowerInvariant();
-        }
-
-        public GameViewModel(GameState gameState) : this(gameState.Info, gameState.CurrentState)
-        {
+            ActualState = gameState.CurrentState;
+            _info = gameState.Info;
+            Metadata = (Name + " " + Manufacturer + " " + Year).ToLowerInvariant();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

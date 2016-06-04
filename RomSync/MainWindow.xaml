@@ -62,7 +62,7 @@
                 <DataGridComboBoxColumn 
                     Header="State" 
                     Width="SizeToCells" 
-                    SelectedItemBinding="{Binding State}" 
+                    SelectedItemBinding="{Binding RequestedState}" 
                     ItemsSource="{Binding Source={StaticResource StateEnum}}"/>
             </DataGrid.Columns>
         </DataGrid>

@@ -77,7 +77,7 @@ namespace RomSync.ViewModel
         {
             var gameVm = item as GameViewModel;
 
-            return gameVm == null || _filter.Matches(gameVm.SearchString);
+            return gameVm == null || _filter.Matches(gameVm.Metadata);
         }
 
         public void UpdateFilter(string filterInput)
