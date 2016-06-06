@@ -16,6 +16,7 @@ namespace RomSync.ViewModel
         public string Name => Info.LongName;
         public string Manufacturer => Info.Manufacturer;
         public string Year => Info.Year;
+        public string Megabytes => $"{Info.SizeInBytes/1024d/1024d:##0.0} MB";
         public string Metadata { get; }
 
         public SyncState RequestedState

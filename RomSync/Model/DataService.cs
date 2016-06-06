@@ -22,17 +22,16 @@ namespace RomSync.Model
             var syncedArcadeGamesTask = GetFilesAsync(settings.ArcadePath());
             var syncedNeoGeoGamesTask = GetFilesAsync(settings.NeoGeoPath());
 
-            await gameListTask;
-            await inputRomsTask;
+            var gameList = await gameListTask;
+            var availableRoms = await inputRomsTask;
 
-            var availableGames = gameListTask.Result.Join(
-                inputRomsTask.Result,
+            var availableGames = gameList.Join(
+                availableRoms,
                 info => info.ShortName,
                 romFile => romFile,
                 (info, romFile) => info);
 
-            await syncedArcadeGamesTask;
-            await syncedNeoGeoGamesTask;
+            await Task.WhenAll(syncedArcadeGamesTask, syncedNeoGeoGamesTask);
 
             return availableGames.Select(
                 info => new GameState(info,
@@ -43,10 +42,16 @@ namespace RomSync.Model
 
         public Task UpdateGameList(IEnumerable<Tuple<GameState, SyncState>> requestedChanges)
         {
-            return Task.WhenAll(requestedChanges.Select(rc => UpdateGame(rc.Item1, rc.Item2)));
+            return Task.Run(() =>
+            {
+                foreach (var rc in requestedChanges)
+                {
+                    UpdateGame(rc.Item1, rc.Item2);
+                }
+            });
         }
 
-        private Task UpdateGame(GameState current, SyncState newState)
+        private void UpdateGame(GameState current, SyncState newState)
         {
             var settings = Settings.Default;
 
@@ -54,23 +59,20 @@ namespace RomSync.Model
             {
                 case SyncState.Unsynced:
                     Debug.Assert(current.CurrentPath != current.Info.FilePath, "Attempting to delete source file");
-                    return Task.Run(() => File.Delete(current.CurrentPath));
+                    File.Delete(current.CurrentPath);
+                    return;
 
                 case SyncState.NeoGeo:
                 case SyncState.Arcade:
-                    var copyTask = Task.Run(() =>
-                                File.Copy(
-                                    current.Info.FilePath,
-                                    Path.Combine(settings.GetPath(newState), current.Info.FileName)));
+                    File.Copy(
+                        current.Info.FilePath,
+                        Path.Combine(settings.GetPath(newState), current.Info.FileName));
 
                     if (current.CurrentState != SyncState.Unsynced)
                     {
-                        return Task.WhenAll(copyTask, Task.Run(() => File.Delete(current.CurrentPath)));
+                        File.Delete(current.CurrentPath);
                     }
-                    else
-                    {
-                        return copyTask;
-                    }
+                    return;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);

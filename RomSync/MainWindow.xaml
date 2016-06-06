@@ -77,6 +77,17 @@
                     Width="50"
                     IsReadOnly="True" 
                     Binding="{Binding Year}" />
+                <DataGridTextColumn 
+                    Header="Size"
+                    Width="60"                    
+                    IsReadOnly="True" 
+                    Binding="{Binding Megabytes}" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridComboBoxColumn 
                     Header="State"
                     Width="100"
