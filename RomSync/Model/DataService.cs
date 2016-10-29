@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using RomSync.Extensions;
 using RomSync.Properties;
+using Microsoft.WindowsAPICodePack.Taskbar;
 
 namespace RomSync.Model
 {
@@ -44,10 +45,18 @@ namespace RomSync.Model
         {
             return Task.Run(() =>
             {
-                foreach (var rc in requestedChanges)
+                var allChanges = requestedChanges.ToArray();
+
+                TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal);
+
+                int completed = 0;
+                foreach (var rc in allChanges)
                 {
                     UpdateGame(rc.Item1, rc.Item2);
+                    TaskbarManager.Instance.SetProgressValue(++completed,allChanges.Length);
                 }
+
+                TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
             });
         }
 
